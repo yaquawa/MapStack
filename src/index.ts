@@ -1,9 +1,9 @@
-interface StackItem {
-  key: string;
-  value: any;
+interface StackItem<K = string, V = any> {
+  key: K;
+  value: V;
 }
 
-export class MapStack implements Iterable<StackItem> {
+export class MapStack<T = any> implements Iterable<StackItem<string, T>> {
   items: StackItem[] = [];
 
   constructor(items: Record<string, any> = {}) {
@@ -15,7 +15,7 @@ export class MapStack implements Iterable<StackItem> {
     }
   }
 
-  push(key: string, value: any) {
+  push(key: string, value: T) {
     this.delete(key);
     this.items.push({ key, value });
   }
@@ -35,13 +35,17 @@ export class MapStack implements Iterable<StackItem> {
     return true;
   }
 
+  clear() {
+    this.items = [];
+  }
+
   indexOf(key: string): number {
     return this.items.findIndex(item => {
       return item.key === key;
     });
   }
 
-  get(key: string): any {
+  get(key: string): T | undefined {
     const item = this.items.find(item => {
       return item.key === key;
     });
@@ -53,15 +57,11 @@ export class MapStack implements Iterable<StackItem> {
     return item.value;
   }
 
-  clear() {
-    this.items = [];
-  }
-
   has(key: string): boolean {
     return !!this.get(key);
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: T) {
     const index = this.indexOf(key);
     if (index === -1) {
       throw new Error(
@@ -72,11 +72,11 @@ export class MapStack implements Iterable<StackItem> {
     this.items[index] = { key, value };
   }
 
-  get first() {
+  get first(): T | undefined {
     return this.items[0]?.value;
   }
 
-  get last() {
+  get last(): T | undefined {
     return this.items[this.items.length - 1]?.value;
   }
 
@@ -93,7 +93,7 @@ export class MapStack implements Iterable<StackItem> {
     let items = this.items;
 
     return {
-      next(): IteratorResult<StackItem> {
+      next(): IteratorResult<StackItem<string, T>> {
         if (index < items.length) {
           return { value: items[index++], done: false };
         } else {

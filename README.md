@@ -40,23 +40,23 @@ interface StackItem {
     value: any;
 }
 
-interface MapStack implements Iterable<StackItem> {
+interface MapStack<T = any> implements Iterable<StackItem<string, T>> {
     items: StackItem[];
     constructor(items?: Record<string, any>);
-    push(key: string, value: any): void;
+    push(key: string, value: T): void;
     pop(): void;
     delete(key: string): boolean;
-    indexOf(key: string): number;
-    get(key: string): any;
     clear(): void;
+    indexOf(key: string): number;
+    get(key: string): T | undefined;
     has(key: string): boolean;
-    set(key: string, value: any): void;
-    first: any;
-    last: any;
+    set(key: string, value: T): void;
+    first: T | undefined;
+    last: T | undefined;
     isEmpty: boolean;
     length: number;
     [Symbol.iterator](): {
-        next(): IteratorResult<StackItem>;
+        next(): IteratorResult<StackItem<string, T>>;
     };
 }
 ```
