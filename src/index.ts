@@ -6,7 +6,7 @@ interface StackItem {
 export class MapStack implements Iterable<StackItem> {
   items: StackItem[] = [];
 
-  constructor(items: Record<string, any>) {
+  constructor(items: Record<string, any> = {}) {
     for (const key in items) {
       this.items.push({
         key: key,
