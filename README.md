@@ -42,7 +42,7 @@ interface StackItem {
 
 interface MapStack implements Iterable<StackItem> {
     items: StackItem[];
-    constructor(items: Record<string, any>);
+    constructor(items?: Record<string, any>);
     push(key: string, value: any): void;
     pop(): void;
     delete(key: string): boolean;
